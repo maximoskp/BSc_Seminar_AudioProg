@@ -39,9 +39,13 @@ void draw()
     // draw a line from one buffer position to the next for both channels
     line( x1, 50 + out.left.get(i)*50, x2, 50 + out.left.get(i+1)*50);
     line( x1, 150 + out.right.get(i)*50, x2, 150 + out.right.get(i+1)*50);
-  }  
+  }
   
+  fill(255);
+  stroke(255);
   text( "frequency: " + sine.frequency.getLastValue(), 5, 15 );
+  fill(255, 70,79,100);
+  ellipse(mouseX, mouseY, 15,15);
 }
 
 // we can change the parameters of the frequency modulation Oscil
@@ -53,4 +57,34 @@ void mouseMoved()
   
   sine.setFrequency( frequency );
   sine.setAmplitude( amplitude );
+}
+
+void keyPressed()
+{ 
+  switch( key )
+  {
+    case '1': 
+      sine.setWaveform( Waves.SINE );
+      break;
+     
+    case '2':
+      sine.setWaveform( Waves.TRIANGLE );
+      break;
+     
+    case '3':
+      sine.setWaveform( Waves.SAW );
+      break;
+    
+    case '4':
+      sine.setWaveform( Waves.SQUARE );
+      break;
+      
+    case '5':
+      sine.setWaveform( Waves.QUARTERPULSE );
+      break;
+     
+    default:
+      println("Invalid option, please press a key from 1 to 5.");
+      break; 
+  }
 }

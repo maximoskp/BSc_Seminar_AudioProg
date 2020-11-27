@@ -14,10 +14,21 @@ void draw(){
   for (int i=0; i<10; i++){
     r.get(i).draw_myself();
   }
+  fill(255,200);
+  ellipse(mouseX, mouseY, 10,10);
 }
 
 void mouseClicked(){
   for (int i=0; i<10; i++){
     r.get(i).check_if_clicked(mouseX, mouseY);
   }
+}
+
+void mouseDragged(){
+  fill(255, 70,79,200);
+  ellipse(mouseX, mouseY, 15,15);
+}
+void mousePressed(){
+  fill(255, 70,79,200);
+  ellipse(mouseX, mouseY, 15,15);
 }

@@ -10,10 +10,11 @@ void setup(){
 void draw(){
   //background(40);
   increase_x(); // calling function increase_x()
-  if (x > 5.0){
+  if (x > 100.0){
     textSize(32);
     fill(random(255), 100.0, 100.0);
     text("hi! - ", random(width), random(height)); 
+    println("bang - " + x);
     x = 0.0;
   }
 }

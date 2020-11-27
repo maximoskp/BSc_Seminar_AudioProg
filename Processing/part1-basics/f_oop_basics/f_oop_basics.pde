@@ -1,8 +1,10 @@
 Human h;
+// float x;
 
 void setup(){
   size(900,700);
-  h = new Human("Melissa", "female", 100, 200);
+  h = new Human("Tom", "male", 100, 200); // constructor
+  // x = 5.0;
 }
 
 void draw(){
@@ -16,11 +18,15 @@ void mouseDragged(){
 void mousePressed(){
   h.move_myself(mouseX, mouseY);
 }
+void mouseReleased(){
+  println("dropped at: " + h.x + " - " + h.y);
+}
 
 class Human{
   float x, y;
   PImage my_image;
   String my_name;
+  // constructor
   Human(String name, String gender, float x_position, float y_position){
     my_name = name;
     x = x_position;
