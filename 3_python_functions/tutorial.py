@@ -107,7 +107,7 @@ def fun_with_arb_mult_args( *args ):
 print( 'arbitrary arguments example: ' + str( fun_with_arb_mult_args( 2 , 3 ) ) )
 
 # keyword agruments
-def fun_with_keyword_args( myname, myage=625 ): # try to reverse order
+def fun_with_keyword_args( myname , myage=625 ): # try to reverse order
     # check the value of each incoming argument
     print( 'myage: ' + str(myage) )
     print( 'myname: ' + myname )
