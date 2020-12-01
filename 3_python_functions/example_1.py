@@ -44,7 +44,15 @@ for i in range( n ):
     f = np.random.randint(50, 5000)
     a = np.random.random()
     tmp_adsr = au.make_adsr( dur_secs = np.random.random() + 0.5 )
-    r = au.make_sine_with_adsr(freq=f, amp=a, adsr=tmp_adsr)
+    d = np.random.randint(0,10)
+    if d <= 6:
+        r = au.make_sine_with_adsr(freq=f, amp=a/1000, adsr=tmp_adsr)
+    elif d <= 7:
+        r = au.make_square_with_adsr(freq=f, amp=a, adsr=tmp_adsr)
+    elif d <= 8:
+        r = au.make_sawtooth_with_adsr(freq=f, amp=a, adsr=tmp_adsr)
+    elif d <= 9:
+        r = au.make_triangle_with_adsr(freq=f, amp=a, adsr=tmp_adsr)
     # place note randomly within the composition
     tmp_idx = np.random.randint(composition_samples - 44100-22050)
     # apply random panning

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+# %%
 # side note: dictionaries in python
 # https://www.w3schools.com/python/python_dictionaries.asp
 # dummy initialization
@@ -20,6 +21,8 @@ print( 'keys: ' + repr( list( d.keys() ) ) )
 # get values as a list
 print( 'values: ' + repr( list( d.values() ) ) )
 
+# %%
+
 # side note: how to display lists
 mylist = [1,2,3]
 print(mylist)
@@ -28,6 +31,9 @@ a_number = 3
 # print('this is mylist' + mylist + ' and this is a number: ' + str(a_number) ) # but this will create an error
 s = repr( mylist )
 print('this is mylist' + repr( mylist ) + ' and this is a number: ' + str(a_number) )
+
+
+# %%
 
 # for nice tutorials on functions:
 # https://www.w3schools.com/python/python_functions.asp
@@ -51,6 +57,8 @@ print('x value before function has been called: ' + str(x))
 fail_to_change_value_of_x()
 print('x value after function has been called: ' + str(x))
 
+# %%
+
 # define function that returns nothing - has arguments
 def fail_to_change_value_of_incoming( t ): # try to use x as argument symbol
     t = 4
@@ -60,6 +68,9 @@ def fail_to_change_value_of_incoming( t ): # try to use x as argument symbol
 
 # the function is called here
 fail_to_change_value_of_incoming(x)
+
+
+# %%
 
 # define function that returns value - has arguments
 def return_value_based_on_incoming( t ):
@@ -72,6 +83,8 @@ x = return_value_based_on_incoming(12)
 print('x value after function has been called: ' + str(x))
 
 
+# %%
+
 # multiple arguments
 def fun_with_mult_args( a1 , a2 , a3 ):
     return a1 + a2 ** a3
@@ -80,6 +93,7 @@ def fun_with_mult_args( a1 , a2 , a3 ):
 print( 'multiple arguments example: ' + str( fun_with_mult_args( 1 , 2 , 3 ) ) )
 
 
+# %%
 
 # multiple returns
 def fun_with_mult_args( a1 , a2 , a3 ):
@@ -91,6 +105,7 @@ r1 , r2 = fun_with_mult_args( 1 , 2 , 3 )
 print( 'multiple returns example: r1: ' + str( r1 ) + ' - r2: ' + str( r2 ) )
 
 
+# %%
 
 # arbitrarily many arguments
 def fun_with_arb_mult_args( *args ):
@@ -105,6 +120,9 @@ def fun_with_arb_mult_args( *args ):
 
 # call function
 print( 'arbitrary arguments example: ' + str( fun_with_arb_mult_args( 2 , 3 ) ) )
+
+
+# %%
 
 # keyword agruments
 def fun_with_keyword_args( myname , myage=625 ): # try to reverse order
@@ -121,6 +139,8 @@ print( 'keyword arguments - no initialized arg: ' + fun_with_keyword_args(myname
 print( 'keyword arguments - mixed order: ' + fun_with_keyword_args(myage=4321, myname='max') )
 # CAUTION: positional arguments (not initialized) need to be placed ahead of initialized
 
+
+# %%
 
 # arbitrary "dictionary" including many arguments
 def fun_with_arb_dict_args( **args ):
