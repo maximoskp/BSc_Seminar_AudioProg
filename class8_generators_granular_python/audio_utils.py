@@ -13,8 +13,9 @@ def make_noise( amp=0.5 , dur_secs=0.5 , sr=44100 ):
     return amp*( 1 - 2*np.random.random( int(dur_secs*sr) ) )
 
 def make_sine( freq=440 , amp=0.5 , phase=0.0 , dur_secs=0.5 , sr=44100 ):
+    # phase is multiples of 2*pi
     t = np.arange(dur_secs*sr)/sr
-    return amp*np.sin( 2*np.pi*freq*t )
+    return amp*np.sin( 2*np.pi*freq*t + np.pi*phase )
 
 def make_adsr( a=0.01 , d=0.03, s_level=0.3 , r=0.1 , dur_secs=0.5 , sr=44100 ):
     a_samples = int(np.floor(a*sr))
@@ -22,9 +23,11 @@ def make_adsr( a=0.01 , d=0.03, s_level=0.3 , r=0.1 , dur_secs=0.5 , sr=44100 ):
     r_samples = int(np.floor(r*sr))
     total_samples = int(np.floor(dur_secs*sr))
     s_samples = total_samples - r_samples - a_samples - d_samples
+    if s_samples < 0:
+        s_samples = 10 # or whatever > 0 value
     a_part = np.linspace( 0, 1, a_samples )
     d_part = np.linspace( 1, s_level, d_samples )
-    s_part = np.linspace( s_level, s_level, s_samples )
+    s_part = np.linspace( s_level, s_level, s_samples ) # s_level*np.ones( s_samples )
     r_part = np.linspace( s_level, 0, r_samples )
     return np.hstack( ( a_part , d_part , s_part , r_part ) )
 
@@ -43,79 +46,79 @@ def make_square_aliased_with_adsr( freq=440 , amp=0.5 , phase=0.0 , adsr=np.ones
 def make_square( freq=440 , amp=0.5 , phase=0.0 , dur_secs=0.5 , sr=44100 ):
     t = np.arange(dur_secs*sr)/sr
     s = np.sin( 2*np.pi*freq*t )
-    i = 1
-    freq_harmonics = freq
+    i = 3
+    freq_harmonics = freq*i
     while freq_harmonics <= sr/2:
+        s += (1/i)*np.sin( 2*np.pi*freq_harmonics*t )
         i += 2
         freq_harmonics = freq*i
-        s += (1/i)*np.sin( 2*np.pi*freq_harmonics*t )
     return amp*s 
 
 def make_square_with_adsr( freq=440 , amp=0.5 , phase=0.0 , adsr=np.ones(22050), sr=44100 ):
     t = np.arange(adsr.size)/sr
     s = np.sin( 2*np.pi*freq*t )
-    i = 1
-    freq_harmonics = freq
+    i = 3
+    freq_harmonics = freq*i
     while freq_harmonics <= sr/2:
+        s += (1/i)*np.sin( 2*np.pi*freq_harmonics*t )
         i += 2
         freq_harmonics = freq*i
-        s += (1/i)*np.sin( 2*np.pi*freq_harmonics*t )
     return amp*s*adsr
 
 def make_sawtooth_aliased( freq=440 , amp=0.5 , phase=0.0 , dur_secs=0.5 , sr=44100 ):
     t = np.arange(dur_secs*sr)/sr
-    return amp*( 1 - 2*( ((t*sr)%(sr%freq))/(sr%freq) ) )
+    return amp*( 1 - 2*( ((t*sr)%(sr/freq))/(sr/freq) ) )
 
 def make_sawtooth_aliased_with_adsr( freq=440 , amp=0.5 , phase=0.0 , adsr=np.ones(22050), sr=44100 ):
     t = np.arange(adsr.size)/sr
-    return amp*( 1 - 2*( ((t*sr)%(sr%freq))/(sr%freq) ) )*adsr
+    return amp*( 1 - 2*( ((t*sr)%(sr/freq))/(sr/freq) ) )*adsr
 
 def make_sawtooth( freq=440 , amp=0.5 , phase=0.0 , dur_secs=0.5 , sr=44100 ):
     t = np.arange(dur_secs*sr)/sr
     s = np.sin( 2*np.pi*freq*t )
-    i = 1
-    freq_harmonics = freq
+    i = 2
+    freq_harmonics = freq*i
     while freq_harmonics <= sr/2:
+        s += (1/i)*np.sin( 2*np.pi*freq_harmonics*t )
         i += 1
         freq_harmonics = freq*i
-        s += (1/i)*np.sin( 2*np.pi*freq_harmonics*t )
     return amp*s 
 
 def make_sawtooth_with_adsr( freq=440 , amp=0.5 , phase=0.0 , adsr=np.ones(22050), sr=44100 ):
     t = np.arange(adsr.size)/sr
     s = np.sin( 2*np.pi*freq*t )
-    i = 1
-    freq_harmonics = freq
+    i = 2
+    freq_harmonics = freq*i
     while freq_harmonics <= sr/2:
+        s += (1/i)*np.sin( 2*np.pi*freq_harmonics*t )
         i += 1
         freq_harmonics = freq*i
-        s += (1/i)*np.sin( 2*np.pi*freq_harmonics*t )
     return amp*s*adsr
 
 def make_triangle( freq=440 , amp=0.5 , phase=0.0 , dur_secs=0.5 , sr=44100 ):
     t = np.arange(dur_secs*sr)/sr
     s = np.sin( 2*np.pi*freq*t )
-    i = 1
-    a = 1
-    freq_harmonics = freq
+    i = 3
+    a = ( (-1)**( (i-1)/2 ))*i**2
+    freq_harmonics = freq*i
     while freq_harmonics <= sr/2:
+        s += (1/a)*np.sin( 2*np.pi*freq_harmonics*t )
         i += 2
         a = ( (-1)**( (i-1)/2 ))*i**2
         freq_harmonics = freq*i
-        s += (1/a)*np.sin( 2*np.pi*freq_harmonics*t )
     return amp*s 
 
 def make_triangle_with_adsr( freq=440 , amp=0.5 , phase=0.0 , adsr=np.ones(22050), sr=44100 ):
     t = np.arange(adsr.size)/sr
     s = np.sin( 2*np.pi*freq*t )
-    i = 1
-    a = 1
-    freq_harmonics = freq
+    i = 3
+    a = ( (-1)**( (i-1)/2 ))*i**2
+    freq_harmonics = freq*i
     while freq_harmonics <= sr/2:
+        s += (1/a)*np.sin( 2*np.pi*freq_harmonics*t )
         i += 2
         a = ( (-1)**( (i-1)/2 ))*i**2
         freq_harmonics = freq*i
-        s += (1/a)*np.sin( 2*np.pi*freq_harmonics*t )
     return amp*s*adsr
 
 def get_part( r , s=0 , e=-1 ):
