@@ -33,7 +33,7 @@ if play_audio:
 
 # %% sine with adsr
 
-a = au.make_adsr( a=0.1 , d=0.1, s_level=0.2 , r=0.1 , dur_secs=dur , sr=sr )
+a = au.make_adsr( a=0.01 , d=0.01, s_level=0.3 , r=0.5 , dur_secs=dur , sr=sr )
 s = au.make_sine_with_adsr( freq=freq , amp=amp , phase=0.0 , adsr=a, sr=sr )
 
 if play_audio:
@@ -71,7 +71,14 @@ if play_audio:
 # %% sawtooth with adsr
 
 a = au.make_adsr( a=0.01 , d=0.01, s_level=0.3 , r=0.3 , dur_secs=dur , sr=sr )
-s = au.make_sawtooth_with_adsr( freq=freq , amp=amp , phase=0.0 , adsr=a, sr=sr )
+s = au.make_sawtooth_with_adsr( freq=5000 , amp=amp , phase=0.0 , adsr=a, sr=sr )
+
+'''
+sp = np.fft.fft( s[:1024] )
+plt.plot( np.linspace( 0, 22050, 512 ) , np.sqrt( sp[:512].real**2 + sp[:512].imag**2 ) )
+
+play_audio = True
+'''
 
 if play_audio:
     sd.play( s , sr )

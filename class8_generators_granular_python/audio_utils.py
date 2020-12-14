@@ -15,7 +15,7 @@ def make_noise( amp=0.5 , dur_secs=0.5 , sr=44100 ):
 def make_sine( freq=440 , amp=0.5 , phase=0.0 , dur_secs=0.5 , sr=44100 ):
     # phase is multiples of 2*pi
     t = np.arange(dur_secs*sr)/sr
-    return amp*np.sin( 2*np.pi*freq*t + np.pi*phase )
+    return amp*np.sin( 2*np.pi*freq*t + np.pi*2*phase )
 
 def make_adsr( a=0.01 , d=0.03, s_level=0.3 , r=0.1 , dur_secs=0.5 , sr=44100 ):
     a_samples = int(np.floor(a*sr))
@@ -24,7 +24,7 @@ def make_adsr( a=0.01 , d=0.03, s_level=0.3 , r=0.1 , dur_secs=0.5 , sr=44100 ):
     total_samples = int(np.floor(dur_secs*sr))
     s_samples = total_samples - r_samples - a_samples - d_samples
     if s_samples < 0:
-        s_samples = 10 # or whatever > 0 value
+        s_samples = 1 # or whatever > 0 value
     a_part = np.linspace( 0, 1, a_samples )
     d_part = np.linspace( 1, s_level, d_samples )
     s_part = np.linspace( s_level, s_level, s_samples ) # s_level*np.ones( s_samples )
@@ -33,15 +33,15 @@ def make_adsr( a=0.01 , d=0.03, s_level=0.3 , r=0.1 , dur_secs=0.5 , sr=44100 ):
 
 def make_sine_with_adsr( freq=440 , amp=0.5 , phase=0.0 , adsr=np.ones(22050), sr=44100 ):
     t = np.arange(adsr.size)/sr
-    return amp*np.sin( 2*np.pi*freq*t )*adsr
+    return amp*np.sin( 2*np.pi*freq*t + np.pi*2*phase )*adsr
 
 def make_square_aliased( freq=440 , amp=0.5 , phase=0.0 , dur_secs=0.5 , sr=44100 ):
     t = np.arange(dur_secs*sr)/sr
-    return amp*( 1 - 2*( ( np.sin( 2*np.pi*freq*t ) > 0 ).astype(float) ) )
+    return amp*( 1 - 2*( ( np.sin( 2*np.pi*freq*t + np.pi*2*phase ) > 0 ).astype(float) ) )
 
 def make_square_aliased_with_adsr( freq=440 , amp=0.5 , phase=0.0 , adsr=np.ones(22050), sr=44100 ):
     t = np.arange(adsr.size)/sr
-    return amp*( 1 - 2*( ( np.sin( 2*np.pi*freq*t ) > 0 ).astype(float) ) )*adsr
+    return amp*( 1 - 2*( ( np.sin( 2*np.pi*freq*t + np.pi*2*phase ) > 0 ).astype(float) ) )*adsr
 
 def make_square( freq=440 , amp=0.5 , phase=0.0 , dur_secs=0.5 , sr=44100 ):
     t = np.arange(dur_secs*sr)/sr
@@ -52,7 +52,7 @@ def make_square( freq=440 , amp=0.5 , phase=0.0 , dur_secs=0.5 , sr=44100 ):
         s += (1/i)*np.sin( 2*np.pi*freq_harmonics*t )
         i += 2
         freq_harmonics = freq*i
-    return amp*s 
+    return amp*s
 
 def make_square_with_adsr( freq=440 , amp=0.5 , phase=0.0 , adsr=np.ones(22050), sr=44100 ):
     t = np.arange(adsr.size)/sr
@@ -82,7 +82,7 @@ def make_sawtooth( freq=440 , amp=0.5 , phase=0.0 , dur_secs=0.5 , sr=44100 ):
         s += (1/i)*np.sin( 2*np.pi*freq_harmonics*t )
         i += 1
         freq_harmonics = freq*i
-    return amp*s 
+    return amp*s
 
 def make_sawtooth_with_adsr( freq=440 , amp=0.5 , phase=0.0 , adsr=np.ones(22050), sr=44100 ):
     t = np.arange(adsr.size)/sr
